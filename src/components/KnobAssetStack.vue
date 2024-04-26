@@ -29,15 +29,11 @@ const currentDeltaRotation = computed(() => currentRotation.value - props.minDeg
       v-if="background"
       class="background"
     />
-    <div
+    <component
+      :is="track"
       v-if="track"
-      class="mask"
-    >
-      <component
-        :is="track"
-        class="track"
-      />
-    </div>
+      class="track"
+    />
     <component
       :is="handle"
       class="handle"
