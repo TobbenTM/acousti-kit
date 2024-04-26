@@ -1,0 +1,18 @@
+{
+    "template": {
+        "scope": "vue",
+        "prefix": "vue",
+        "body": [
+            "<script setup lang=\"ts\">",
+            "$1",
+            "</script>",
+            "",
+            "<template>",
+            "  <div>",
+            "    $2",
+            "  </div>",
+            "</template>"
+        ],
+        "description": "Create a simple Vue 3 component"
+    },
+}
