@@ -19,8 +19,7 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.mjs"
     }
   },
   "main": "./dist/index.mjs",
@@ -39,8 +38,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "unbuild",
-    "stub": "unbuild --stub",
+    "build": "rimraf ./dist && vue-tsc && vite build",
     "lint": "eslint .",
     "prepublishOnly": "nr build",
     "release": "bumpp && npm publish",
@@ -59,6 +57,7 @@
     "@antfu/ni": "^0.21.12",
     "@antfu/utils": "^0.7.7",
     "@types/node": "^20.11.30",
+    "@vitejs/plugin-vue": "^5.0.4",
     "bumpp": "^9.4.0",
     "eslint": "^8.57.0",
     "esno": "^4.7.0",
@@ -67,8 +66,8 @@
     "rimraf": "^5.0.5",
     "simple-git-hooks": "^2.11.0",
     "typescript": "^5.4.2",
-    "unbuild": "^2.0.0",
     "vite": "^5.1.6",
+    "vite-plugin-dts": "^3.9.0",
     "vite-plugin-inspect": "^0.8.3",
     "vite-svg-loader": "^5.1.0",
     "vitepress": "^1.1.3",

@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "target": "es2018",
-    "lib": ["esnext", "DOM"],
+    "lib": [
+      "esnext",
+      "DOM"
+    ],
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -10,8 +13,15 @@
     ],
     "strict": true,
     "strictNullChecks": true,
+    "declaration": true,
+    "declarationDir": "dist",
+    "outDir": "dist",
     "esModuleInterop": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true
-  }
+  },
+  "include": [
+    "src",
+    "docs"
+  ]
 }
