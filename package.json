@@ -67,6 +67,7 @@
     "simple-git-hooks": "^2.11.0",
     "typescript": "^5.4.2",
     "vite": "^5.1.6",
+    "vite-plugin-css-injected-by-js": "^3.5.0",
     "vite-plugin-dts": "^3.9.0",
     "vite-plugin-inspect": "^0.8.3",
     "vite-svg-loader": "^5.1.0",

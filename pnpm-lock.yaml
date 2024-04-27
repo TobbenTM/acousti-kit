@@ -47,6 +47,9 @@ devDependencies:
   vite:
     specifier: ^5.1.6
     version: 5.2.10(@types/node@20.12.7)
+  vite-plugin-css-injected-by-js:
+    specifier: ^3.5.0
+    version: 3.5.0(vite@5.2.10)
   vite-plugin-dts:
     specifier: ^3.9.0
     version: 3.9.0(@types/node@20.12.7)(typescript@5.4.5)(vite@5.2.10)
@@ -4822,6 +4825,14 @@ packages:
       - sugarss
       - supports-color
       - terser
+    dev: true
+
+  /vite-plugin-css-injected-by-js@3.5.0(vite@5.2.10):
+    resolution: {integrity: sha512-d0QaHH9kS93J25SwRqJNEfE29PSuQS5jn51y9N9i2Yoq0FRO7rjuTeLvjM5zwklZlRrIn6SUdtOEDKyHokgJZg==}
+    peerDependencies:
+      vite: '>2.0.0-0'
+    dependencies:
+      vite: 5.2.10(@types/node@20.12.7)
     dev: true
 
   /vite-plugin-dts@3.9.0(@types/node@20.12.7)(typescript@5.4.5)(vite@5.2.10):
