@@ -1,7 +1,7 @@
 {
   "name": "acousti-kit",
   "type": "module",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "packageManager": "pnpm@8.10.5",
   "description": "Vue components for production grade audio control interfaces",
   "author": "Tobias Lønnerød Madsen <m@dsen.tv>",
@@ -15,7 +15,9 @@
     "audio",
     "components"
   ],
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
