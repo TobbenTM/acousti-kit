@@ -36,4 +36,6 @@ export default defineConfig({
   vite: {
     plugins: [svgLoader()],
   },
+
+  cleanUrls: true,
 })
