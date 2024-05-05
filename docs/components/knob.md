@@ -30,9 +30,12 @@ It will automatically lock the pointer to the knob, making sure all mouse moveme
 <script setup>
 import { ref } from 'vue'
 import { Knob, KnobAssetStack } from '../../src'
-import Background from '../assets/example-knob/background.svg'
-import Handle from '../assets/example-knob/handle.svg'
-import Track from '../assets/example-knob/track.svg'
+import BackgroundComponent from '../assets/example-knob/background.svg'
+import HandleComponent from '../assets/example-knob/handle.svg'
+import TrackComponent from '../assets/example-knob/track.svg'
+import Background from '../assets/example-knob/background.svg?raw'
+import Handle from '../assets/example-knob/handle.svg?raw'
+import Track from '../assets/example-knob/track.svg?raw'
 
 const volume = ref(100)
 </script>
@@ -167,35 +170,43 @@ Using this pattern, you can easily supply your own graphics, making knobs fit wh
 1. An optional "track" for the knob
 1. A "handle" for the knob
 
-The component assumes all layers are the same size, and simplifies common implementations by automatically stacking them on top of each other. While the background layer remains static at all times, the track will fill up behind the handle, and the handle will rotate with the value.
+The component assumes all layers are the same size, and simplifies common implementations by automatically stacking them on top of each other. While the background layer remains static at all times, the track will either allow clipping, or fill up behind the handle, and the handle will rotate with the value. To ensure performance, this is being rendered in a canvas element to keep all transformations in-sync.
 
 <Knob
   v-slot="{ percentage }"
   v-model="volume"
 >
   <KnobAssetStack
-    :style="{
-      width: '128px',
-      height: '128px',
-    }"
+    :width="128"
+    :height="128"
     :min-degrees="-140"
     :max-degrees="140"
     :percentage="percentage"
-    :background="Background"
-    :track="Track"
-    :handle="Handle"
+    :background-svg="Background"
+    :track-svg="Track"
+    :handle-svg="Handle"
   />
 </Knob>
 
 Volume: {{ volume }}
 
+This example is composed of the following three layers (background, track, handle) using the default clipping mode for the track to expose the background:
+
+<div :style="{ display: 'flex' }">
+  <BackgroundComponent :style="{ height: '64px', marginRight: '8px' }" />
+  <TrackComponent :style="{ height: '64px', marginRight: '8px' }" />
+  <HandleComponent :style="{ height: '64px' }" />
+</div>
+
+If you have a track asset that should instead be shown as the handle moves, you can change the `track-mode` of the asset stack component to `Fill`.
+
 ```vue
 <script setup>
 import { ref } from 'vue'
 import { Knob, KnobAssetStack } from 'acousti-kit'
-import Background from '../assets/example-knob/background.svg'
-import Handle from '../assets/example-knob/handle.svg'
-import Track from '../assets/example-knob/track.svg'
+import Background from '../assets/example-knob/background.svg?raw'
+import Handle from '../assets/example-knob/handle.svg?raw'
+import Track from '../assets/example-knob/track.svg?raw'
 
 const volume = ref(100)
 </script>
@@ -213,9 +224,9 @@ const volume = ref(100)
       :min-degrees="-140"
       :max-degrees="140"
       :percentage="percentage"
-      :background="Background"
-      :track="Track"
-      :handle="Handle"
+      :background-svg="Background"
+      :track-svg="Track"
+      :handle-svg="Handle"
     />
   </Knob>
 </template>
