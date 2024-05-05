@@ -5,10 +5,12 @@ const props = withDefaults(defineProps<{
   normalStrength?: number
   fineStrength?: number
   fineKey?: string
+  captureMouse?: boolean
 }>(), {
   normalStrength: 1,
   fineStrength: 0.1,
   fineKey: 'Alt',
+  captureMouse: true,
 })
 
 const emits = defineEmits<{
@@ -50,21 +52,31 @@ function handlePointerLockChange() {
   }
 }
 
+function handleMouseUp() {
+  if (props.captureMouse)
+    document.exitPointerLock()
+  else
+    document.removeEventListener('mousemove', handleMove, false)
+}
+
 onMounted(() => {
-  document.addEventListener('pointerlockchange', handlePointerLockChange)
+  if (props.captureMouse)
+    document.addEventListener('pointerlockchange', handlePointerLockChange)
+
   document.addEventListener('keydown', handleKeyDown)
   document.addEventListener('keyup', handleKeyUp)
   window.addEventListener('blur', handleWindowBlur)
 
   el.value?.addEventListener('mousedown', (event) => {
     event.stopPropagation()
-    el.value?.requestPointerLock()
+    event.preventDefault()
+    if (props.captureMouse)
+      el.value?.requestPointerLock()
+    else
+      document.addEventListener('mousemove', handleMove, false)
   })
 
-  el.value?.addEventListener('mouseup', (event) => {
-    event.stopPropagation()
-    document.exitPointerLock()
-  })
+  document.addEventListener('mouseup', handleMouseUp, false)
 })
 
 onBeforeUnmount(() => {
@@ -73,6 +85,7 @@ onBeforeUnmount(() => {
   document.removeEventListener('keyup', handleKeyUp, false)
   document.removeEventListener('keydown', handleKeyDown, false)
   document.removeEventListener('mousemove', handleMove, false)
+  document.removeEventListener('mouseup', handleMouseUp, false)
   window.removeEventListener('blur', handleWindowBlur, false)
 })
 </script>

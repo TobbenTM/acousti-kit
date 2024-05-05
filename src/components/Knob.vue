@@ -9,9 +9,11 @@ const props = withDefaults(defineProps<{
   normalStrength?: number
   fineStrength?: number
   fineKey?: string
+  captureMouse?: boolean
 }>(), {
   min: 0,
   max: 100,
+  captureMouse: true,
 })
 
 const emit = defineEmits<{
@@ -36,6 +38,7 @@ const percentage = computed(() => (props.max - props.min) / 100 * (props.modelVa
       :normal-strength="normalStrength"
       :fine-strength="fineStrength"
       :fine-key="fineKey"
+      :capture-mouse="captureMouse"
       @change="handleChange"
     >
       <slot
@@ -62,6 +65,8 @@ const percentage = computed(() => (props.max - props.min) / 100 * (props.modelVa
 }
 
 .knob {
+  cursor: pointer;
+
   .knob__default {
     background: #666;
     border-radius: 50%;

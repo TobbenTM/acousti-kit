@@ -45,6 +45,29 @@ Volume: {{ volume }}
 
 The component comes with a couple of features that are all adjustable:
 
+### Mouse capture
+
+By default, the knob will capture the mouse pointer to prevent it leaving the position while adjusting the knob.
+This can be turned off using the `capture-mouse` prop:
+
+```vue
+<template>
+  <Knob
+    v-model="volume"
+    :capture-mouse="false"
+  />
+</template>
+```
+
+Example:
+
+<Knob
+  v-model="volume"
+  :capture-mouse="false"
+/>
+
+Volume: {{ volume }}
+
 ### Fine Adjustment
 
 To enable finer input control, the knob will by default scale down the intensity of change when the `Alt` key is held down.
