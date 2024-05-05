@@ -15,6 +15,8 @@ const props = withDefaults(defineProps<{
 
 const emits = defineEmits<{
   (e: 'change', delta: number): void
+  (e: 'start'): void
+  (e: 'end'): void
 }>()
 
 const el = ref<null | HTMLElement>(null)
@@ -57,6 +59,8 @@ function handleMouseUp() {
     document.exitPointerLock()
   else
     document.removeEventListener('mousemove', handleMove, false)
+
+  emits('end')
 }
 
 onMounted(() => {
@@ -70,6 +74,8 @@ onMounted(() => {
   el.value?.addEventListener('mousedown', (event) => {
     event.stopPropagation()
     event.preventDefault()
+    emits('start')
+
     if (props.captureMouse)
       el.value?.requestPointerLock()
     else

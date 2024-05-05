@@ -18,6 +18,8 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: number): void
+  (e: 'start'): void
+  (e: 'end'): void
 }>()
 
 function clamp(value: number) {
@@ -42,6 +44,8 @@ const percentage = computed(() => 100 / (props.max - props.min) * (clamp(props.m
       :fine-key="fineKey"
       :capture-mouse="captureMouse"
       @change="handleChange"
+      @start="$emit('start')"
+      @end="$emit('end')"
     >
       <slot
         :value="clamp(props.modelValue)"
