@@ -20,14 +20,16 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: number): void
 }>()
 
+function clamp(value: number) {
+  return Math.min(props.max, Math.max(props.min, value))
+}
+
 function handleChange(delta: number) {
-  const newValue = delta < 0
-    ? Math.max(props.min, props.modelValue + delta)
-    : Math.min(props.max, props.modelValue + delta)
+  const newValue = clamp(props.modelValue + delta)
   emit('update:modelValue', Math.round(newValue))
 }
 
-const percentage = computed(() => (props.max - props.min) / 100 * (props.modelValue - props.min))
+const percentage = computed(() => 100 / (props.max - props.min) * (clamp(props.modelValue) - props.min))
 </script>
 
 <template>
@@ -42,7 +44,7 @@ const percentage = computed(() => (props.max - props.min) / 100 * (props.modelVa
       @change="handleChange"
     >
       <slot
-        :value="modelValue"
+        :value="clamp(props.modelValue)"
         :percentage="percentage"
         :fine="fine"
         :active="active"

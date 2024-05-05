@@ -95,6 +95,30 @@ Example:
 
 Volume: {{ volume }}
 
+### Specific min/max
+
+If you have a different range than 0 to 100, you can use the `min` and `max` props to tweak the range:
+
+```vue
+<template>
+  <Knob
+    v-model="volume"
+    :min="10"
+    :max="420"
+  />
+</template>
+```
+
+Example:
+
+<Knob
+  v-model="volume"
+  :min="10"
+  :max="420"
+/>
+
+Volume: {{ volume }}
+
 ### Custom Design
 
 The component is made to be used with a supplied component as the knob itself, and what is seen here is just the default fallback. To provide your own, you can use the slot, and the scoped props to render what you want:
