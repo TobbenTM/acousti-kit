@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import MouseControl from './MouseControl.vue'
+import MouseControl from './MouseControl/MouseControl.vue'
+import type { MouseBehaviour } from './MouseControl/types'
 
 const props = withDefaults(defineProps<{
   modelValue: number
@@ -11,6 +12,7 @@ const props = withDefaults(defineProps<{
   fineStrength?: number
   fineKey?: string
   captureMouse?: boolean
+  mouseBehaviour?: MouseBehaviour
 }>(), {
   min: 0,
   max: 100,
@@ -60,6 +62,7 @@ const percentage = computed(() => 100 / (props.max - props.min) * (clamp(props.m
       :fine-strength="fineStrength"
       :fine-key="fineKey"
       :capture-mouse="captureMouse"
+      :behaviour="mouseBehaviour"
       @change="handleChange"
       @start="$emit('start')"
       @end="$emit('end')"

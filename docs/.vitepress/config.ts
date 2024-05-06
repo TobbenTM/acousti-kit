@@ -24,6 +24,7 @@ export default defineConfig({
         text: 'Components',
         items: [
           { text: 'Knob', link: '/components/knob' },
+          { text: 'MouseControl', link: '/components/mouse-control' },
         ],
       },
     ],

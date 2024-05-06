@@ -77,7 +77,7 @@ export class KnobAssetStackCanvasRenderer {
   }
 
   update(percentage: number) {
-    this.draw(percentage)
+    requestAnimationFrame(() => this.draw(percentage))
   }
 
   draw(percentage: number) {

@@ -1,4 +1,4 @@
 export enum TrackBehaviour {
-  Clip,
-  Fill,
+  Clip = 'Clip',
+  Fill = 'Fill',
 }

@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { MouseBehaviour } from './types'
 
 const props = withDefaults(defineProps<{
   normalStrength?: number
   fineStrength?: number
   fineKey?: string
   captureMouse?: boolean
+  behaviour?: MouseBehaviour
+  friction?: number
 }>(), {
   normalStrength: 1,
   fineStrength: 0.1,
   fineKey: 'Alt',
   captureMouse: true,
+  behaviour: MouseBehaviour.Flat,
+  friction: 0.5,
 })
 
 const emits = defineEmits<{
@@ -22,15 +27,37 @@ const emits = defineEmits<{
 const el = ref<null | HTMLElement>(null)
 const fine = ref(false)
 const active = ref(false)
+const currentVelocity = ref(0)
+const velocityTimeout = ref<null | number>(null)
 
 function handleMove(event: MouseEvent) {
-  emits('change', (event.movementX + (event.movementY * -1)) / 2 * (fine.value ? props.fineStrength : props.normalStrength))
+  const magnitude = (event.movementX + (event.movementY * -1)) / 2 * (fine.value ? props.fineStrength : props.normalStrength)
+
+  if (props.behaviour === MouseBehaviour.Flat) {
+    emits('change', magnitude)
+    return
+  }
+
+  currentVelocity.value += magnitude * 0.1
+}
+
+function handleVelocityChange() {
+  if (Math.abs(currentVelocity.value) > 0.1)
+    emits('change', currentVelocity.value)
+
+  currentVelocity.value *= 1 - props.friction
+  if (active.value)
+    velocityTimeout.value = setTimeout(handleVelocityChange, 32) // 30 fps
+  else
+    currentVelocity.value = 0
 }
 
 function handleWindowBlur() {
   active.value = false
   fine.value = false
-  document.exitPointerLock()
+
+  if (props.captureMouse)
+    document.exitPointerLock()
 }
 
 function handleKeyDown(event: KeyboardEvent) {
@@ -44,14 +71,11 @@ function handleKeyUp(event: KeyboardEvent) {
 }
 
 function handlePointerLockChange() {
-  if (document.pointerLockElement === el.value) {
+  if (document.pointerLockElement === el.value)
     document.addEventListener('mousemove', handleMove, false)
-    active.value = true
-  }
-  else {
+
+  else
     document.removeEventListener('mousemove', handleMove, false)
-    active.value = false
-  }
 }
 
 function handleMouseUp() {
@@ -60,6 +84,8 @@ function handleMouseUp() {
   else
     document.removeEventListener('mousemove', handleMove, false)
 
+  active.value = false
+  currentVelocity.value = 0
   emits('end')
 }
 
@@ -80,6 +106,11 @@ onMounted(() => {
       el.value?.requestPointerLock()
     else
       document.addEventListener('mousemove', handleMove, false)
+
+    active.value = true
+
+    if (props.behaviour === MouseBehaviour.Velocity)
+      handleVelocityChange()
   })
 
   document.addEventListener('mouseup', handleMouseUp, false)
@@ -93,6 +124,9 @@ onBeforeUnmount(() => {
   document.removeEventListener('mousemove', handleMove, false)
   document.removeEventListener('mouseup', handleMouseUp, false)
   window.removeEventListener('blur', handleWindowBlur, false)
+
+  if (velocityTimeout.value)
+    clearTimeout(velocityTimeout.value)
 })
 </script>
 

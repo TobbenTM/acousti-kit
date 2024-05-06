@@ -13,7 +13,7 @@ Its most basic usage merely requires a `v-model` binding (or alternatively a `:m
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { Knob, KnobAssetStack } from 'acousti-kit'
+import { Knob } from 'acousti-kit'
 
 const volume = ref(100)
 </script>
@@ -43,6 +43,32 @@ const volume = ref(100)
 <Knob v-model="volume" />
 
 Volume: {{ volume }}
+
+## Props
+
+The following props are available for the `<Knob />` component:
+
+| Prop             | Type                   | Default  | Optional | Note                                                                      |
+| ---------------- | ---------------------- | -------- | -------- | ------------------------------------------------------------------------- |
+| `modelValue`     | `number`               |          | No       | Used for two-way data binding                                             |
+| `min`            | `number`               | `0`      | Yes      | The minimum value of the knob                                             |
+| `max`            | `number`               | `100`    | Yes      | The maximum value of the knob                                             |
+| `tabIndex`       | `number`               | `0`      | Yes      | Sets the tabindex for assistive technologies                              |
+| `normalStrength` | `number`               | `0`      | Yes      | Configures the normal strength of mouse movement effect on value          |
+| `fineStrength`   | `number`               | `0`      | Yes      | Configures the fine adjustment strength of mouse movement effect on value |
+| `fineKey`        | `string`               | `Alt`    | Yes      | Sets the key used for enabling fine adjustment                            |
+| `captureMouse`   | `boolean`              | `true`   | Yes      | Enables mouse capture when adjusting                                      |
+| `mouseBehaviour` | `'Flat' \| 'Velocity'` | `'Flat'` | Yes      | Configures the mouse control mode                                         |
+
+## Events
+
+The following events are available for the `<Knob />` component:
+
+| Prop                 | Type     | Note                                                       |
+| -------------------- | -------- | ---------------------------------------------------------- |
+| `@update:modelValue` | `number` | Emitted on any value update, used for two-way data binding |
+| `@start`             | `void`   | Emitted when the user starts adjusting                     |
+| `@end`               | `void`   | Emitted when the user ends adjusting                       |
 
 ## Advanced Usage
 
@@ -94,6 +120,33 @@ Example:
   :normal-strength="10"
   :fine-strength="0.1"
   fine-key="Control"
+/>
+
+Volume: {{ volume }}
+
+### Mouse mode
+
+The knob supports two different kinds of mouse adjustment modes:
+
+1. **Flat**: This is the default, and changes the value with as much as the mouse moves
+1. **Velocity**: An alternative move where instead the velocity of the mouse is being considered
+
+For more details on this, check the documentation of the [MouseControl](./mouse-control.md) component which is being used internally by the `<Knob />`. To change to the Velocity mode, use the `mouse-behaviour` prop:
+
+```vue
+<template>
+  <Knob
+    v-model="volume"
+    mouse-behaviour="Velocity"
+  />
+</template>
+```
+
+Example:
+
+<Knob
+  v-model="volume"
+  mouse-behaviour="Velocity"
 />
 
 Volume: {{ volume }}
