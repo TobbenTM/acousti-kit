@@ -6,6 +6,7 @@ const props = withDefaults(defineProps<{
   modelValue: number
   min?: number
   max?: number
+  tabIndex?: number
   normalStrength?: number
   fineStrength?: number
   fineKey?: string
@@ -13,6 +14,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   min: 0,
   max: 100,
+  tabIndex: 0,
   captureMouse: true,
 })
 
@@ -31,11 +33,26 @@ function handleChange(delta: number) {
   emit('update:modelValue', Math.round(newValue))
 }
 
+function handleKeyDown(event: KeyboardEvent) {
+  switch (event.key) {
+    case 'ArrowUp':
+      event.preventDefault()
+      event.stopPropagation()
+      handleChange(1)
+      break
+    case 'ArrowDown':
+      event.preventDefault()
+      event.stopPropagation()
+      handleChange(-1)
+      break
+  }
+}
+
 const percentage = computed(() => 100 / (props.max - props.min) * (clamp(props.modelValue) - props.min))
 </script>
 
 <template>
-  <div class="container">
+  <div class="container" :tabindex="tabIndex" @keydown="handleKeyDown">
     <MouseControl
       v-slot="{ fine, active }"
       class="knob"
@@ -68,11 +85,10 @@ const percentage = computed(() => 100 / (props.max - props.min) * (clamp(props.m
 <style scoped>
 .container {
   display: inline-block;
+  cursor: pointer;
 }
 
 .knob {
-  cursor: pointer;
-
   .knob__default {
     background: #666;
     border-radius: 50%;
