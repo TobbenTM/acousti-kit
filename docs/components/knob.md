@@ -15,7 +15,7 @@ Its most basic usage merely requires a `v-model` binding (or alternatively a `:m
 import { ref } from 'vue'
 import { Knob } from 'acousti-kit'
 
-const volume = ref(100)
+const volume = ref(75)
 </script>
 
 <template>
@@ -29,7 +29,7 @@ It will automatically lock the pointer to the knob, making sure all mouse moveme
 
 <script setup>
 import { ref } from 'vue'
-import { Knob, KnobAssetStack } from '../../src'
+import { Knob, KnobAssetStack, KnobComponentStack } from '../../src'
 import BackgroundComponent from '../assets/example-knob/background.svg'
 import HandleComponent from '../assets/example-knob/handle.svg'
 import TrackComponent from '../assets/example-knob/track.svg'
@@ -37,7 +37,7 @@ import Background from '../assets/example-knob/background.svg?raw'
 import Handle from '../assets/example-knob/handle.svg?raw'
 import Track from '../assets/example-knob/track.svg?raw'
 
-const volume = ref(100)
+const volume = ref(75)
 </script>
 
 <Knob v-model="volume" />
@@ -261,7 +261,7 @@ import Background from '../assets/example-knob/background.svg?raw'
 import Handle from '../assets/example-knob/handle.svg?raw'
 import Track from '../assets/example-knob/track.svg?raw'
 
-const volume = ref(100)
+const volume = ref(75)
 </script>
 
 <template>
@@ -283,4 +283,134 @@ const volume = ref(100)
     />
   </Knob>
 </template>
+```
+
+As an option to the canvas based asset stack, a simpler version exists to give more control over styling, where you can instead use slots to design the knob. Using the same assets from above, but using the `<KnobComponentStack />` instead, this yields a similar looking result, but with more options to use CSS attributes for styling the different elements.
+
+<Knob
+  v-slot="{ percentage }"
+  v-model="volume"
+  class="knob"
+>
+  <KnobComponentStack
+    :min-degrees="-140"
+    :max-degrees="140"
+    :percentage="percentage"
+  >
+    <template #background>
+      <BackgroundComponent class="background" />
+    </template>
+    <template #track>
+      <TrackComponent class="track" />
+    </template>
+    <HandleComponent class="handle" />
+  </KnobComponentStack>
+</Knob>
+
+Volume: {{ volume }}
+
+<style scoped>
+.knob {
+  .background {
+    width: 128px;
+    height: 128px;
+  }
+
+  .handle, .handle > *, .background, .background > * {
+    opacity: .5;
+    transition: all .25s ease;
+  }
+
+  &:hover {
+    .handle, .background {
+      opacity: 1;
+    }
+
+    .handle > *, .background > :deep(path) {
+      opacity: 1;
+      fill: green;
+    }
+  }
+
+  &:focus {
+    .handle > * {
+      fill: blue;
+    }
+
+    .background > :deep(path) {
+      fill: red;
+    }
+  }
+}
+</style>
+
+The code for this stack is a bit more extensive, but mainly to cover the examples you can achieve through some rather simple CSS:
+
+```vue
+<script setup>
+import { ref } from 'vue'
+import { Knob, KnobAssetStack } from 'acousti-kit'
+import Background from '../assets/example-knob/background.svg'
+import Handle from '../assets/example-knob/handle.svg'
+import Track from '../assets/example-knob/track.svg'
+
+const volume = ref(75)
+</script>
+
+<template>
+  <Knob
+    v-slot="{ percentage }"
+    v-model="volume"
+    class="knob"
+  >
+    <KnobComponentStack
+      :min-degrees="-140"
+      :max-degrees="140"
+      :percentage="percentage"
+    >
+      <template #background>
+        <Background class="background" />
+      </template>
+      <template #track>
+        <Track class="track" />
+      </template>
+      <Handle class="handle" />
+    </KnobComponentStack>
+  </Knob>
+</template>
+
+<style scoped>
+.knob {
+  .background {
+    width: 128px;
+    height: 128px;
+  }
+
+  .handle, .handle > *, .background, .background > * {
+    opacity: .5;
+    transition: all .25s ease;
+  }
+
+  &:hover {
+    .handle, .background {
+      opacity: 1;
+    }
+
+    .handle > *, .background > :deep(path) {
+      opacity: 1;
+      fill: green;
+    }
+  }
+
+  &:focus {
+    .handle > * {
+      fill: blue;
+    }
+
+    .background > :deep(path) {
+      fill: red;
+    }
+  }
+}
+</style>
 ```

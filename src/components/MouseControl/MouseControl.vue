@@ -55,6 +55,7 @@ function handleVelocityChange() {
 function handleWindowBlur() {
   active.value = false
   fine.value = false
+  emits('end')
 
   if (props.captureMouse)
     document.exitPointerLock()

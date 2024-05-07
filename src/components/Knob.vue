@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import MouseControl from './MouseControl/MouseControl.vue'
 import type { MouseBehaviour } from './MouseControl/types'
 
@@ -26,6 +26,9 @@ const emit = defineEmits<{
   (e: 'end'): void
 }>()
 
+const container = ref<null | HTMLElement>(null)
+const active = ref(false)
+
 function clamp(value: number) {
   return Math.min(props.max, Math.max(props.min, value))
 }
@@ -50,13 +53,31 @@ function handleKeyDown(event: KeyboardEvent) {
   }
 }
 
+function onStart() {
+  emit('start')
+  active.value = true
+  container.value?.focus()
+}
+
+function onEnd() {
+  container.value?.blur()
+  active.value = false
+  emit('end')
+}
+
 const percentage = computed(() => 100 / (props.max - props.min) * (clamp(props.modelValue) - props.min))
 </script>
 
 <template>
-  <div class="container" :tabindex="tabIndex" @keydown="handleKeyDown">
+  <div
+    ref="container"
+    class="container"
+    :class="active ? 'active' : ''"
+    :tabindex="tabIndex"
+    @keydown="handleKeyDown"
+  >
     <MouseControl
-      v-slot="{ fine, active }"
+      v-slot="{ fine }"
       class="knob"
       :normal-strength="normalStrength"
       :fine-strength="fineStrength"
@@ -64,8 +85,8 @@ const percentage = computed(() => 100 / (props.max - props.min) * (clamp(props.m
       :capture-mouse="captureMouse"
       :behaviour="mouseBehaviour"
       @change="handleChange"
-      @start="$emit('start')"
-      @end="$emit('end')"
+      @start="onStart"
+      @end="onEnd"
     >
       <slot
         :value="clamp(props.modelValue)"
@@ -89,6 +110,10 @@ const percentage = computed(() => 100 / (props.max - props.min) * (clamp(props.m
 .container {
   display: inline-block;
   cursor: pointer;
+
+  &.active {
+    outline: none;
+  }
 }
 
 .knob {
