@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue'
+import { computed, ref } from 'vue'
 import MouseControl from './MouseControl/MouseControl.vue'
 import type { MouseBehaviour } from './MouseControl/types'
 
@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<{
   min: 0,
   max: 100,
   tabIndex: 0,
-  captureMouse: true,
+  captureMouse: false,
 })
 
 const emit = defineEmits<{

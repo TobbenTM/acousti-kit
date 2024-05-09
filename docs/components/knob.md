@@ -23,8 +23,6 @@ const volume = ref(75)
 </template>
 ```
 
-It will automatically lock the pointer to the knob, making sure all mouse movements are registered for the knob value changes.
-
 ## Example
 
 <script setup>
@@ -76,14 +74,14 @@ The component comes with a couple of features that are all adjustable:
 
 ### Mouse capture
 
-By default, the knob will capture the mouse pointer to prevent it leaving the position while adjusting the knob.
-This can be turned off using the `capture-mouse` prop:
+Optionally, you can make the knob capture the mouse pointer to prevent it leaving the position while adjusting the knob.
+This can be turned on using the `capture-mouse` prop:
 
 ```vue
 <template>
   <Knob
     v-model="volume"
-    :capture-mouse="false"
+    :capture-mouse="true"
   />
 </template>
 ```
@@ -92,7 +90,7 @@ Example:
 
 <Knob
   v-model="volume"
-  :capture-mouse="false"
+  :capture-mouse="true"
 />
 
 Volume: {{ volume }}
@@ -107,7 +105,7 @@ Both the key and the intensity can be configured:
   <Knob
     v-model="volume"
     :normal-strength="10"
-    :fine-strength="0.1"
+    :fine-strength="1"
     fine-key="Control"
   />
 </template>
@@ -118,7 +116,7 @@ Example:
 <Knob
   v-model="volume"
   :normal-strength="10"
-  :fine-strength="0.1"
+  :fine-strength="1"
   fine-key="Control"
 />
 
@@ -147,6 +145,8 @@ Example:
 <Knob
   v-model="volume"
   mouse-behaviour="Velocity"
+  :normal-strength="2"
+  :fine-strength="0.5"
 />
 
 Volume: {{ volume }}

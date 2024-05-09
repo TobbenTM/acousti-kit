@@ -31,8 +31,6 @@ const delta = ref(0)
 </template>
 ```
 
-It will automatically lock the pointer to the element, making sure all mouse movements are registered for the value changes emitted by the control.
-
 ## Example
 
 <script setup>
@@ -93,12 +91,12 @@ The component comes with a couple of features that are all adjustable:
 
 ### Mouse capture
 
-By default, the control will capture the mouse pointer to prevent it leaving the position while adjusting.
-This can be turned off using the `capture-mouse` prop:
+Optionally, you can make the mouse control capture the mouse pointer to prevent it leaving the position while adjusting.
+This can be turned on using the `capture-mouse` prop:
 
 ```vue
 <template>
-  <MouseControl :capture-mouse="false">
+  <MouseControl :capture-mouse="true">
     <div />
   </MouseControl>
 </template>
@@ -107,7 +105,7 @@ This can be turned off using the `capture-mouse` prop:
 Example:
 
 <MouseControl
-  :capture-mouse="false"
+  :capture-mouse="true"
   @change="delta = Math.round($event*10)/10"
   @end="delta = ''"
 >

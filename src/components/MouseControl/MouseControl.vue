@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<{
   normalStrength: 1,
   fineStrength: 0.1,
   fineKey: 'Alt',
-  captureMouse: true,
+  captureMouse: false,
   behaviour: MouseBehaviour.Flat,
   friction: 0.5,
 })
