@@ -270,10 +270,8 @@ const volume = ref(75)
     v-model="volume"
   >
     <KnobAssetStack
-      :style="{
-        width: '128px',
-        height: '128px',
-      }"
+      :width="128"
+      :height="128"
       :min-degrees="-140"
       :max-degrees="140"
       :percentage="percentage"
