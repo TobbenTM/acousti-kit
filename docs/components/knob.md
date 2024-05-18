@@ -347,7 +347,7 @@ The code for this stack is a bit more extensive, but mainly to cover the example
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { Knob, KnobAssetStack } from 'acousti-kit'
+import { Knob, KnobComponentStack } from 'acousti-kit'
 import Background from '../assets/example-knob/background.svg'
 import Handle from '../assets/example-knob/handle.svg'
 import Track from '../assets/example-knob/track.svg'
